@@ -10,7 +10,7 @@ const spriteWidth = 575;
 const spriteHeight = 523;
 let gameFrame = 0;
 let staggerFrames = 5;
-let playerState = 'run';
+let playerState = 'getHit';
 const spriteAnimations = [];
 const animationStates = [{
         name: 'idle',
