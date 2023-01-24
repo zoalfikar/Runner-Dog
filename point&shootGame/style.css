@@ -18,3 +18,7 @@ body{
 #playerImage , #enemyImage {
     display: none ;
 }
+#collisionCanavas{
+    /* background-color: red; */
+    opacity: 0;
+}
