@@ -18,6 +18,7 @@
         let ravens = [];
 
         let score = 0 ;
+        let gameover = false;
         ctx.font = '50px Impact'
         class Raven {
 
@@ -54,6 +55,9 @@
                     else this.frame++
                     this.timeSinceFlap = 0;
                 }
+                if (this.x < 0 - this.width) {
+                    gameover = true;
+                }
 
                     
             }
@@ -86,12 +90,11 @@
                 if (this.timerSinceLastFrame > this.frameInterval) {
                     this.frame++;
                     this.timerSinceLastFrame = 0;
-
                     if(this.frame > 5 ) this.markedForDeletion = true
                 }
             }
             draw(){
-                ctx.drawImage(this.image,this.frame * this.spriteWidth,0,this.spriteWidth,this.spriteHeight,this.x,this.y,this.size,this.size)
+                ctx.drawImage(this.image,this.frame * this.spriteWidth,0,this.spriteWidth,this.spriteHeight,this.x,this.y-this.size/4,this.size,this.size)
             }
         }    
         function drawScore()
@@ -101,7 +104,14 @@
             ctx.fillStyle = 'white';
             ctx.fillText('Score: '+ score , 55,80)
         }
-
+        function drawGameOver()
+        {
+            ctx.textAlign = 'center'
+            ctx.fillStyle = 'black';
+            ctx.fillText('GAME OVER, your score is '+ score , CANVAS_WIDTH /2,CANVAS_HEIGHT/2)
+            ctx.fillStyle = 'white';
+            ctx.fillText('GAME OVER, your score is '+ score , CANVAS_WIDTH/2 +5,CANVAS_HEIGHT/2 +5)
+        }
         this.window.addEventListener('click',function (e) {
             const detectPixelColor = colliosionCtx.getImageData(e.x,e.y,1,1)
             console.log(detectPixelColor);
@@ -111,7 +121,6 @@
                     o.markedForDeletion = true
                     score++
                     explosion.push(new Explosion(o.x,o.y,o.width))
-                    console.log(explosion);
                 }
             })
             
@@ -134,7 +143,8 @@
             [...ravens, ...explosion].forEach(o=>o.draw());
             ravens = ravens.filter(o=>!o.markedForDeletion);
             explosion = explosion.filter(o=>!o.markedForDeletion);
-            requestAnimationFrame(animate);
+            if(!gameover) requestAnimationFrame(animate);
+            else drawGameOver()
         }
         animate(0)
 
