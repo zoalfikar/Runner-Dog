@@ -41,6 +41,7 @@
                 this.flapInterval = Math.random() * 50 + 50;
                 this.randomColors = [Math.floor(Math.random()*255),Math.floor(Math.random()*255),Math.floor(Math.random()*255)]
                 this.color = 'rgb('+this.randomColors[0]+','+this.randomColors[1]+','+this.randomColors[2]+')'
+                this.hasTrail = Math.random() > 0.5;
             }
             update(deltatime){
                 if (this.y > CANVAS_HEIGHT - this.height || this.y < 0 ) {
@@ -54,6 +55,13 @@
                     if (this.frame > this.maxFrame) this.frame = 0;
                     else this.frame++
                     this.timeSinceFlap = 0;
+                    if (this.hasTrail) {
+                        for (let i = 0; i < 5 ; i++) {
+                            particles.push(new Particle(this.x,this.y,this.width,this.color))
+                        }
+                        
+                    }
+
                 }
                 if (this.x < 0 - this.width) {
                     gameover = true;
@@ -68,6 +76,33 @@
             }
         }
         let explosion = [];
+        let particles = [];
+        class Particle {
+            constructor(x ,y ,size ,color){
+                this.size=size; 
+                this.x =x + this.size/2 + Math.random() * 50 - 25;
+                this.y = y + this.size/3 + Math.random() * 50 - 25;
+                this.raduis = Math.random() * size / 10 ;
+                this.maxRadius = Math.random() * 20 + 35;
+                this.markedForDeletion =false ;
+                this.speedX=Math.random()*1 + 0.5;
+                this.color = color;
+            }
+            update(){
+                this.x += this.speedX;
+                this.raduis += 0.3;
+                if(this.raduis > this.maxRadius - 5) this.markedForDeletion =true;
+            }
+            draw(){
+                ctx.save();
+                ctx.globalAlpha = 1 -this.raduis / this.maxRadius;
+                ctx.beginPath();
+                ctx.fillStyle = this.color;
+                ctx.arc(this.x,this.y,this.raduis,0,Math.PI *2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
         class Explosion {
             constructor(x,y,size){
                 this.spriteWidth = 100;
@@ -139,10 +174,11 @@
                    return a.width - b.width ;
                 });
             }
-            [...ravens , ...explosion].forEach(o=>o.update(deltatime));
-            [...ravens, ...explosion].forEach(o=>o.draw());
+            [...particles,...ravens , ...explosion].forEach(o=>o.update(deltatime));
+            [...particles,...ravens, ...explosion].forEach(o=>o.draw());
             ravens = ravens.filter(o=>!o.markedForDeletion);
             explosion = explosion.filter(o=>!o.markedForDeletion);
+            particles = particles.filter(o=>!o.markedForDeletion);
             if(!gameover) requestAnimationFrame(animate);
             else drawGameOver()
         }
