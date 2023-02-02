@@ -11,6 +11,6 @@
     left: 50%;
     transform: translate(-50%,-50%);
 }
-#player{
+#player,#image1,#image2,#image3,#image4,#image5,#enemy_fly,#enemy_spider_big,#enemy_plant{
     display: none;
 }
