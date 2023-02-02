@@ -1,7 +1,7 @@
 import  Player  from "./player.js";
 import { InputHandler } from "./input.js";
 import { Background } from "./background.js";
-import { FlyingEnemy , GroundEnemy } from "./enemies.js";
+import { FlyingEnemy , GroundEnemy , ClimbingEnemy } from "./enemies.js";
 window.addEventListener('load',function () {
     const canvas = document.getElementById('canvas1');
     const ctx = canvas.getContext('2d');
@@ -52,6 +52,7 @@ window.addEventListener('load',function () {
         }
         addEnemy(){
             if(this.speed > 0 && Math.random() < 0.5) this.enemies.push(new GroundEnemy(this))
+            if(this.speed > 0 ) this.enemies.push(new ClimbingEnemy(this))
             this.enemies.push(new FlyingEnemy(this));
         }
     }
