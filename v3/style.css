@@ -1,16 +1,26 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-#canvas1{
+#canvas1 {
     border: 5px solid black;
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
 }
-#player,#image1,#image2,#image3,#image4,#image5,#enemy_fly,#enemy_spider_big,#enemy_plant{
+
+#player,
+#image1,
+#image2,
+#image3,
+#image4,
+#image5,
+#enemy_fly,
+#enemy_spider_big,
+#enemy_plant,
+#fire {
     display: none;
 }
